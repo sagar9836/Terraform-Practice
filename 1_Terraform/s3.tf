@@ -1,6 +1,6 @@
 # this is s3 bucket
-resource "aws_s3_bucket" "my_bucket-2022027-sonol" {
-  bucket = "my-unique-bucket-name"
+resource "aws_s3_bucket" "gp-st-13-devops-buc" {
+  bucket = "gp-st-13-devops-buc"
   acl    = "private"
 
   tags = {
