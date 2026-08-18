@@ -1,0 +1,52 @@
+# key pair
+resource "aws_key_pair" "deployer" {
+  key_name   = "deployer-key"
+  public_key = file("keys/terra-key-ec2.pub")
+
+}
+# vpc 
+resource "aws_default_vpc" "default" {
+  tags = {
+    Name = "Default VPC"
+  }
+}
+
+# resource "aws_vpc" "mainvpc" {
+#   cidr_block = "10.1.0.0/16"
+# }
+
+# security groups
+resource "aws_default_security_group" "default" {
+  vpc_id = aws_default_vpc.default.id
+
+  ingress {
+    protocol  = "ssh"
+    from_port = 22
+    to_port   = 22
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  ingress {
+    protocol  = "tcp"
+    from_port = 80
+    to_port   = 80
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  egress {
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+}
+
+#& security group
+# ec2 instance
+
+resource "aws_instance" "my_ec2_instance" {
+  ami           = "ami-0c55b159cbfaa5788"
+  instance_type = "t2.micro"
+  key_name      = aws_key_pair.deployer.key_name
+  vpc_security_group_ids = [aws_default_security_group.default.id]
+}
