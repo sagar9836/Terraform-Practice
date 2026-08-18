@@ -49,7 +49,7 @@ resource "aws_instance" "my_ec2_instance" {
   instance_type          = "t3.micro"
   key_name               = aws_key_pair.deployer.key_name
   vpc_security_group_ids = [aws_default_security_group.default.id]
-
+  user_data              = file("scripts/install_nginx.sh")
   # ========================================
   # Root EBS Volume
   # ========================================
@@ -59,6 +59,7 @@ resource "aws_instance" "my_ec2_instance" {
     volume_type           = "gp3"
     encrypted             = true
     delete_on_termination = true
+
   }
 
   tags = {
