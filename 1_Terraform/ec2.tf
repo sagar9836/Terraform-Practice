@@ -45,6 +45,12 @@ resource "aws_default_security_group" "default" {
 # ec2 instance
 
 resource "aws_instance" "my_ec2_instance" {
+#   count = 2
+  for_each = tomap({
+    instance1 = "instance1"
+    instance2 = "instance2"
+  })
+  depends_on = [aws_key_pair.deployer, aws_default_security_group.default]
   ami                    = "ami-0b6d9d3d33ba97d99"
   instance_type          = "t3.micro"
   key_name               = aws_key_pair.deployer.key_name
@@ -55,7 +61,7 @@ resource "aws_instance" "my_ec2_instance" {
   # ========================================
 
   root_block_device {
-    volume_size           = 20
+    volume_size           = 20 
     volume_type           = "gp3"
     encrypted             = true
     delete_on_termination = true
