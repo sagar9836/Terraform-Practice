@@ -45,8 +45,8 @@ resource "aws_default_security_group" "default" {
 # ec2 instance
 
 resource "aws_instance" "my_ec2_instance" {
-  ami           = "ami-0c55b159cbfaa5788"
-  instance_type = "t2.micro"
+  ami           = "ami-01a00762f46d584a1"
+  instance_type = "t3.micro"
   key_name      = aws_key_pair.deployer.key_name
   vpc_security_group_ids = [aws_default_security_group.default.id]
 }
